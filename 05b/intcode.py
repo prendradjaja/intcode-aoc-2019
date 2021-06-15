@@ -11,7 +11,8 @@ class IntcodeComputer:
         self.memory = [99]
 
     def load_memory(self, memory):
-        self.memory = memory
+        copy = list(memory)
+        self.memory = copy
 
     def run(self):
         memory = self.memory
