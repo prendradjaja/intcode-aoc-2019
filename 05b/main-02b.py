@@ -13,8 +13,7 @@ def main(
 
     for in1 in in1s:
         for in2 in in2s:
-            copy = list(program)
-            computer.load_memory(copy)
+            computer.load_memory(program)
             computer.memory[1] = in1
             computer.memory[2] = in2
             output = computer.run()
