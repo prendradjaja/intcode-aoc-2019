@@ -39,6 +39,10 @@ class IntcodeComputer:
         return len(inspect.signature(self.get_handler(opcode)).parameters)
 
 
+    ########################
+    # INSTRUCTION HANDLERS #
+    ########################
+
     def handler_1(self, in1, in2, out):
         self.memory[out.value] = self.get_value(in1) + self.get_value(in2)
 
@@ -65,7 +69,6 @@ class Param:
     def __init__(self, value, mode):
         self.value = value
         self.mode = mode
-
 
 def get_opcode(n):
     return n % 100
