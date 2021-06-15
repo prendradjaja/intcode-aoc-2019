@@ -1,6 +1,6 @@
 import inspect
-from abc import ABC, abstractmethod
 from puzzle_inputs import day_5_program as p
+from io_devices import ThermalEnvironmentSupervisionTerminalIO
 
 POSITION_MODE = 0
 IMMEDIATE_MODE = 1
@@ -9,27 +9,6 @@ class Param:
     def __init__(self, value, mode):
         self.value = value
         self.mode = mode
-
-class IO(ABC):
-    @abstractmethod
-    def input(self):
-        pass
-
-    @abstractmethod
-    def output(self, value):
-        pass
-
-class ThermalEnvironmentSupervisionTerminalIO(IO):
-    def __init__(self):
-        self.input_called = False
-
-    def input(self):
-        assert not self.input_called
-        self.input_called = True
-        return 1
-
-    def output(self, value):
-        print(value)
 
 io = ThermalEnvironmentSupervisionTerminalIO()
 
