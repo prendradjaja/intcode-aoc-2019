@@ -14,8 +14,17 @@ def handler_2(memory, in1, in2, out):
 def get_handler(opcode):
     return globals()[f'handler_{opcode}']
 
-def get_count_args(opcode):
+def get_count_params(opcode):
     return len(inspect.signature(get_handler(opcode)).parameters) - 1
+
+def get_opcode_and_parameter_modes(n, params_count):
+    opcode = n % 100
+    n //= 100
+    parameter_modes = []
+    for _ in range(params_count):
+        parameter_modes.append(n % 10)
+        n //= 10
+    return opcode, parameter_modes
 
 # mutates the program!
 def execute_program(program):
@@ -24,10 +33,10 @@ def execute_program(program):
     while memory[ip] != 99:
         opcode = memory[ip]
         handler = get_handler(opcode)
-        args_index = ip + 1
-        args_count = get_count_args(opcode)
-        handler(memory, *memory[args_index : args_index + args_count])
-        ip += args_count + 1
+        params_index = ip + 1
+        params_count = get_count_params(opcode)
+        handler(memory, *memory[params_index : params_index + params_count])
+        ip += params_count + 1
     return memory[0]
 
 # for in1 in range(0, 99+1):
