@@ -42,6 +42,14 @@ class IntcodeComputer:
     def get_params_count(self, opcode):
         return len(inspect.signature(self.get_handler(opcode)).parameters)
 
+    def get_value(self, param):
+        if param.mode == POSITION_MODE:
+            return self.memory[param.value]
+        elif param.mode == IMMEDIATE_MODE:
+            return param.value
+        else:
+            1/0
+
 
     ########################
     # INSTRUCTION HANDLERS #
@@ -83,13 +91,6 @@ class IntcodeComputer:
     def handler_8(self, in1, in2, out):
         self.memory[out.value] = int(self.get_value(in1) == self.get_value(in2))
 
-    def get_value(self, param):
-        if param.mode == POSITION_MODE:
-            return self.memory[param.value]
-        elif param.mode == IMMEDIATE_MODE:
-            return param.value
-        else:
-            1/0
 
 class Param:
     def __init__(self, value, mode):
