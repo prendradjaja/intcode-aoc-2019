@@ -12,10 +12,19 @@ def main():
     computer.load_memory(program)
     computer.run()
 
-def large_example():
+def large_example(n):
     """
-    >>> large_example()
+    >>> large_example(5)
+    999
+    >>> large_example(8)
+    1000
+    >>> large_example(10)
+    1001
     """
+    io = OneInputAndPrintIO(n)
+    computer = IntcodeComputer(io)
+    computer.load_memory(day_5b_larger_example)
+    computer.run()
 
 if __name__ == '__main__':
     main()
