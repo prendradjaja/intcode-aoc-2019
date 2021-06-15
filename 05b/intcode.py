@@ -15,20 +15,23 @@ class IntcodeComputer:
 
     def run(self):
         memory = self.memory
-        ip = 0
-        while memory[ip] != 99:
-            opcode = get_opcode(memory[ip])
+        self.ip = 0
+        while memory[self.ip] != 99:
+            opcode = get_opcode(memory[self.ip])
             handler = self.get_handler(opcode)
 
-            params_index = ip + 1
+            params_index = self.ip + 1
             params_count = self.get_params_count(opcode)
-            param_modes = get_param_modes(memory[ip], params_count)
+            param_modes = get_param_modes(memory[self.ip], params_count)
             params = memory[params_index : params_index + params_count]
             params = [Param(p, m) for p, m in zip(params, param_modes)]
 
-            handler(*params)
+            ip = handler(*params)
 
-            ip += params_count + 1
+            if ip is None:
+                self.ip += params_count + 1
+            else:
+                self.ip = ip
         return memory[0]
 
     def get_handler(self, opcode):
