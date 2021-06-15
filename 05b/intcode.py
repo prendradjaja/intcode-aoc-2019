@@ -45,19 +45,41 @@ class IntcodeComputer:
     # INSTRUCTION HANDLERS #
     ########################
 
+    # add
     def handler_1(self, in1, in2, out):
         self.memory[out.value] = self.get_value(in1) + self.get_value(in2)
 
+    # multiply
     def handler_2(self, in1, in2, out):
         self.memory[out.value] = self.get_value(in1) * self.get_value(in2)
 
+    # input
     def handler_3(self, addr):
         assert self.io is not None
         self.memory[addr.value] = self.io.input()
 
+    # output
     def handler_4(self, in1):
         assert self.io is not None
         self.io.output(self.get_value(in1))
+
+    # jump-if-true
+    def handler_5(self, condition, address):
+        if self.get_value(condition) != 0:
+            return self.get_value(address)
+
+    # jump-if-false
+    def handler_6(self, condition, address):
+        if self.get_value(condition) == 0:
+            return self.get_value(address)
+
+    # less-than
+    def handler_7(self, in1, in2, out):
+        self.memory[out.value] = int(self.get_value(in1) < self.get_value(in2))
+
+    # equals
+    def handler_8(self, in1, in2, out):
+        self.memory[out.value] = int(self.get_value(in1) == self.get_value(in2))
 
     def get_value(self, param):
         if param.mode == POSITION_MODE:
