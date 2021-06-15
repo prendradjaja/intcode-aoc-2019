@@ -1,38 +1,29 @@
 from abc import ABC, abstractmethod
 
-# TODO Split inputs apart from outputs
 
-class IO(ABC):
+class Input(ABC):
     @abstractmethod
-    def input(self):
+    def get_value(self):
         pass
 
+
+class Output(ABC):
     @abstractmethod
-    def output(self, value):
+    def put_value(self, value):
         pass
 
-# Day 5
-class ThermalEnvironmentSupervisionTerminalIO(IO):
-    def __init__(self):
-        self.input_called = False
 
-    def input(self):
-        assert not self.input_called
-        self.input_called = True
-        return 1
-
-    def output(self, value):
-        print(value)
-
-class OneInputAndPrintIO(IO):
+class OneValueInput(Input):
     def __init__(self, value):
-        self.input_called = False
+        self.called = False
         self.value = value
 
-    def input(self):
-        assert not self.input_called
-        self.input_called = True
+    def get_value(self):
+        assert not self.called
+        self.called = True
         return self.value
 
-    def output(self, value):
+
+class PrintOutput(Output):
+    def put_value(self, value):
         print(value)

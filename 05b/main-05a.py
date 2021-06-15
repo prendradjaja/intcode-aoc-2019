@@ -1,6 +1,6 @@
 from puzzle_inputs import day_5_program as program
 from intcode import IntcodeComputer
-from io_devices import ThermalEnvironmentSupervisionTerminalIO
+from io_devices import OneValueInput, PrintOutput
 
 def main():
     """
@@ -16,8 +16,10 @@ def main():
     0
     7692125
     """
-    io = ThermalEnvironmentSupervisionTerminalIO()
-    computer = IntcodeComputer(io)
+    computer = IntcodeComputer(
+        OneValueInput(1),
+        PrintOutput()
+    )
     computer.load_memory(program)
     computer.run()
 
