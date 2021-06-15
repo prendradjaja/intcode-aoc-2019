@@ -1,4 +1,9 @@
-from puzzle_inputs import day_5_program as p
-from intcode import execute_program
+from puzzle_inputs import day_5_program as program
+from intcode import IntcodeComputer
+from io_devices import ThermalEnvironmentSupervisionTerminalIO
 
-execute_program(p)
+io = ThermalEnvironmentSupervisionTerminalIO()
+
+computer = IntcodeComputer(io)
+computer.load_memory(program)
+computer.run()
