@@ -5,7 +5,6 @@ POSITION_MODE = 0
 IMMEDIATE_MODE = 1
 
 
-# mutates the program!
 class IntcodeComputer:
     def __init__(self, io=None):
         self.io = io
