@@ -6,8 +6,9 @@ IMMEDIATE_MODE = 1
 
 
 class IntcodeComputer:
-    def __init__(self, io=None):
-        self.io = io
+    def __init__(self, input_=None, output=None):
+        self.input = input_
+        self.output = output
         self.memory = [99]
 
     def load_memory(self, memory):
@@ -56,13 +57,13 @@ class IntcodeComputer:
 
     # input
     def handler_3(self, addr):
-        assert self.io is not None
-        self.memory[addr.value] = self.io.input()
+        assert self.input is not None
+        self.memory[addr.value] = self.input.get_value()
 
     # output
     def handler_4(self, in1):
-        assert self.io is not None
-        self.io.output(self.get_value(in1))
+        assert self.output is not None
+        self.output.put_value(self.get_value(in1))
 
     # jump-if-true
     def handler_5(self, condition, address):

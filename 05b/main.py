@@ -1,14 +1,16 @@
 from puzzle_inputs import day_5_program as program, day_5b_larger_example
 from intcode import IntcodeComputer
-from io_devices import OneInputAndPrintIO
+from io_devices import OneValueInput, PrintOutput
 
 def main():
     """
     >>> main()
     14340395
     """
-    io = OneInputAndPrintIO(5)
-    computer = IntcodeComputer(io)
+    computer = IntcodeComputer(
+        OneValueInput(5),
+        PrintOutput()
+    )
     computer.load_memory(program)
     computer.run()
 
@@ -21,8 +23,10 @@ def large_example(n):
     >>> large_example(10)
     1001
     """
-    io = OneInputAndPrintIO(n)
-    computer = IntcodeComputer(io)
+    computer = IntcodeComputer(
+        OneValueInput(n),
+        PrintOutput()
+    )
     computer.load_memory(day_5b_larger_example)
     computer.run()
 
