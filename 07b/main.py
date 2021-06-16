@@ -43,14 +43,20 @@ def get_thruster_signal(phase_settings, program):
         computer.load_memory(program)
     computers[0].input.put_value(0)
 
+    stopped = [False] * count_amplifiers
+
     for i in itertools.cycle(range(count_amplifiers)):
+        if all(stopped):
+            break
+
         computer = computers[i]
         last_opcode = None
         while last_opcode != 4 and last_opcode != 99:
             last_opcode = computer.step()
             print('   ' * i, last_opcode)
         if last_opcode == 99:
-            return last_output.get_value()
+            stopped[i] = True
+    return last_output.get_value()
 
 
 if __name__ == '__main__':
