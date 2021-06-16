@@ -9,6 +9,8 @@ all_phase_settings = [5, 6, 7, 8, 9]
 
 def main():
     """
+    >>> main()
+    8271623
     """
     print(max(
         get_thruster_signal(phase_settings, program)
