@@ -10,7 +10,9 @@ all_phase_settings = range(5)
 def main():
     """
     """
-    print(get_thruster_signal([2, 3, 0, 4, 1], program))
+    program = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,
+27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
+    print(get_thruster_signal([9,8,7,6,5], program))
 
     return
     print(max(
@@ -35,6 +37,7 @@ def get_thruster_signal(phase_settings, program):
         computer.input = last_output
         computer.output = QueueStore()
         last_output = computer.output
+    computers[-1].output = computers[0].input
 
     # Load programs and initial values
     for computer, phase_setting in zip(computers, phase_settings):
@@ -56,7 +59,8 @@ def get_thruster_signal(phase_settings, program):
             print('   ' * i, last_opcode)
         if last_opcode == 99:
             stopped[i] = True
-    return last_output.get_value()
+
+    return computers[-1].output.get_value()
 
 
 if __name__ == '__main__':
