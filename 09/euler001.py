@@ -20,12 +20,24 @@ program = [
     # if @103 jump to END
     1005, 103, END,
 
-    # total += i
+    # total += i  # TODO move this line down after ISMULT3OR5
     1, 101, 102, 102,
     # i += 1
     101, 1, 101, 101,
     # jump to LOOP
     1105, 1, LOOP,
+
+    # ISMULT3OR5: (@120 = temp:ismult3, @121 = temp:ismult5, @122 = result)
+    # - checks if i is a multiple of 3 or 5
+    # TODO
+
+    # ISMULT: (@110 = factor, @111 = output address, @112 = temp, @113 = return ip)
+    # - checks if i is a multiple of factor
+    # temp = 0
+    # while temp < i:
+    #     temp += factor
+    # @111 = temp == i
+    # jump to @113
 
     # END:
     # print(total)
