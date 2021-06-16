@@ -1,12 +1,15 @@
-from puzzle_inputs import day_7_program as program
+from puzzle_inputs import day_7_program as program, day_7a_last_example
 from intcode import IntcodeComputer
 from io_devices import FixedValuesInput, OneValueStore
 import itertools
 
 
-def main():
+def main(program=program):
     """
     >>> main()
+    24405
+    >>> main(day_7a_last_example)
+    65210
     """
     computer = IntcodeComputer()
     computer.output = OneValueStore()
