@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+# Abstract base classes
 
 class Input(ABC):
     @abstractmethod
@@ -13,6 +14,8 @@ class Output(ABC):
         pass
 
 
+# Input devices
+
 OneValueInput = lambda value: FixedValuesInput([value])
 
 
@@ -24,6 +27,14 @@ class FixedValuesInput(Input):
         return next(self.iterator)
 
 
+# Output devices
+
 class PrintOutput(Output):
     def put_value(self, value):
         print(value)
+
+
+# TODO name
+class OneValueStore(Output):
+    def put_value(self, value):
+        self.value = value
