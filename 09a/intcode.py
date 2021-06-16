@@ -5,6 +5,7 @@ from memory import Memory
 
 POSITION_MODE = 0
 IMMEDIATE_MODE = 1
+RELATIVE_MODE = 2
 
 
 class IntcodeComputer:
@@ -21,6 +22,7 @@ class IntcodeComputer:
         if program:
             self.load_memory(program)
         self.ip = 0
+        self.relative_base = 0
         last_opcode = None
         while last_opcode != 99:
             last_opcode = self.step()
@@ -57,6 +59,8 @@ class IntcodeComputer:
             return self.memory[param.value]
         elif param.mode == IMMEDIATE_MODE:
             return param.value
+        elif param.mode == RELATIVE_MODE:
+            return self.memory[self.relative_base + param.value]
         else:
             1/0
 
@@ -100,6 +104,10 @@ class IntcodeComputer:
     # equals
     def handler_8(self, in1, in2, out):
         self.memory[out.value] = int(self.get_value(in1) == self.get_value(in2))
+
+    # adjust relative base
+    def handler_9(self, in1):
+        self.relative_base += self.get_value(in1)
 
     # stop
     def handler_99(self):
