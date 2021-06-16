@@ -16,7 +16,8 @@ def main(
             computer.load_memory(program)
             computer.memory[1] = in1
             computer.memory[2] = in2
-            output = computer.run()
+            computer.run()
+            output = computer.memory[0]
             if output == target_output:
                 print(100 * in1 + in2)
                 return

@@ -10,7 +10,8 @@ def main():
     computer.load_memory(program)
     computer.memory[1] = 12
     computer.memory[2] = 2
-    print(computer.run())
+    computer.run()
+    print(computer.memory[0])
 
 if __name__ == '__main__':
     main()

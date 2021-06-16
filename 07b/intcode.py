@@ -19,16 +19,14 @@ class IntcodeComputer:
         if program:
             self.load_memory(program)
         self.ip = 0
-        result = None
-        while result is None:
-            result = self.step()
-        return result
+        last_opcode = None
+        while last_opcode != 99:
+            last_opcode = self.step()
+        return last_opcode
 
     # Returns None if continue
     def step(self):
         memory = self.memory
-        if memory[self.ip] == 99:
-            return memory[0]
         opcode = get_opcode(memory[self.ip])
         handler = self.get_handler(opcode)
 
@@ -44,6 +42,7 @@ class IntcodeComputer:
             self.ip += params_count + 1
         else:
             self.ip = ip
+        return opcode
 
     def get_handler(self, opcode):
         return getattr(self, f'handler_{opcode}')
@@ -99,6 +98,10 @@ class IntcodeComputer:
     # equals
     def handler_8(self, in1, in2, out):
         self.memory[out.value] = int(self.get_value(in1) == self.get_value(in2))
+
+    # stop
+    def handler_99(self):
+        pass
 
 
 class Param:
