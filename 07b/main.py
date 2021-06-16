@@ -5,7 +5,7 @@ import itertools
 
 
 all_phase_settings = [5, 6, 7, 8, 9]
-# all_phase_settings = range(5)
+
 
 def main():
     """
@@ -53,7 +53,6 @@ def get_thruster_signal(phase_settings, program):
         last_opcode = None
         while last_opcode != 4 and last_opcode != 99:
             last_opcode = computer.step()
-            # print('   ' * i, last_opcode)
         if last_opcode == 99:
             stopped[i] = True
 
