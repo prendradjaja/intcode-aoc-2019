@@ -25,12 +25,20 @@ def get_thruster_signal(phase_settings, computer, program):
     24405
     """
     last_output = 0
-    for setting in phase_settings:
+    for i, setting in enumerate(phase_settings):
+        print('prog', i)
         computer.input = FixedValuesInput([setting, last_output])
-        computer.run(program)
+        computer.load_memory(program)
+        computer.ip = 0
+        last_opcode = None
+        while last_opcode != 99:
+            last_opcode = computer.step()
+            print(last_opcode)
         last_output = computer.output.value
+        print()
     return last_output
 
 
 if __name__ == '__main__':
-    main()
+    print(get_thruster_signal([2, 3, 0, 4, 1], IntcodeComputer(None, OneValueStore()), program))
+    # main()

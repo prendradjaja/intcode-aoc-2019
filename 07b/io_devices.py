@@ -38,3 +38,14 @@ class PrintOutput(Output):
 class OneValueStore(Output):
     def put_value(self, value):
         self.value = value
+
+
+class QueueStore(Input, Output):
+    def __init__(self):
+        self.values = []
+
+    def get_value(self):
+        return self.values.pop(0)
+
+    def put_value(self, value):
+        self.values.append(value)
