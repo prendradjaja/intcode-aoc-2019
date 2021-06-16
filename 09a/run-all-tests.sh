@@ -8,7 +8,7 @@ python3 -m doctest -v main-05a.py
 python3 -m doctest -v main-05b.py
 python3 -m doctest -v main-07a.py
 python3 -m doctest -v main-07b.py
+python3 -m doctest -v main-09.py
 
 python3 -m doctest -v test_programs.py
 
-python3 -m doctest -v main.py
