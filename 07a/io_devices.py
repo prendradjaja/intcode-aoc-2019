@@ -13,15 +13,15 @@ class Output(ABC):
         pass
 
 
-class OneValueInput(Input):
-    def __init__(self, value):
-        self.called = False
-        self.value = value
+OneValueInput = lambda value: FixedValuesInput([value])
+
+
+class FixedValuesInput(Input):
+    def __init__(self, values):
+        self.iterator = iter(values)
 
     def get_value(self):
-        assert not self.called
-        self.called = True
-        return self.value
+        return next(self.iterator)
 
 
 class PrintOutput(Output):
