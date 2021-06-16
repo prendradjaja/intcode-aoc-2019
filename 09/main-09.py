@@ -17,10 +17,6 @@ def boost(n):
     >>> boost(1)
     3429606717
     """
-    # # Skip this test because it's slow and doesn't seem to do anything new
-    # >>> boost(2)
-    # 33679
-
     computer = IntcodeComputer(OneValueInput(n), PrintOutput())
     computer.run(program)
 
