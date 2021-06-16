@@ -5,16 +5,11 @@ import itertools
 
 
 all_phase_settings = [5, 6, 7, 8, 9]
-all_phase_settings = range(5)
+# all_phase_settings = range(5)
 
 def main():
     """
     """
-    program = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,
-27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
-    print(get_thruster_signal([9,8,7,6,5], program))
-
-    return
     print(max(
         get_thruster_signal(phase_settings, program)
         for phase_settings in itertools.permutations(all_phase_settings)
@@ -56,7 +51,7 @@ def get_thruster_signal(phase_settings, program):
         last_opcode = None
         while last_opcode != 4 and last_opcode != 99:
             last_opcode = computer.step()
-            print('   ' * i, last_opcode)
+            # print('   ' * i, last_opcode)
         if last_opcode == 99:
             stopped[i] = True
 
