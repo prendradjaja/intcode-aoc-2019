@@ -64,6 +64,14 @@ class IntcodeComputer:
         else:
             1/0
 
+    def set_value(self, address, value):
+        if address.mode == POSITION_MODE:
+            self.memory[address.value] = value
+        elif address.mode == RELATIVE_MODE:
+            self.memory[self.relative_base + address.value] = value
+        else: # Immediate mode is not allowed for "set" instructions
+            1/0
+
 
     ########################
     # INSTRUCTION HANDLERS #
@@ -71,16 +79,16 @@ class IntcodeComputer:
 
     # add
     def handler_1(self, in1, in2, out):
-        self.memory[out.value] = self.get_value(in1) + self.get_value(in2)
+        self.set_value(out, self.get_value(in1) + self.get_value(in2))
 
     # multiply
     def handler_2(self, in1, in2, out):
-        self.memory[out.value] = self.get_value(in1) * self.get_value(in2)
+        self.set_value(out, self.get_value(in1) * self.get_value(in2))
 
     # input
     def handler_3(self, addr):
         assert self.input is not None
-        self.memory[addr.value] = self.input.get_value()
+        self.set_value(addr, self.input.get_value())
 
     # output
     def handler_4(self, in1):
@@ -99,11 +107,11 @@ class IntcodeComputer:
 
     # less-than
     def handler_7(self, in1, in2, out):
-        self.memory[out.value] = int(self.get_value(in1) < self.get_value(in2))
+        self.set_value(out, int(self.get_value(in1) < self.get_value(in2)))
 
     # equals
     def handler_8(self, in1, in2, out):
-        self.memory[out.value] = int(self.get_value(in1) == self.get_value(in2))
+        self.set_value(out, int(self.get_value(in1) == self.get_value(in2)))
 
     # adjust relative base
     def handler_9(self, in1):
