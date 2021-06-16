@@ -6,10 +6,10 @@ CODE_SEGMENT_LENGTH = 100
 DATA_SEGMENT_LENGTH = 100
 '';                                                                                                 program = [0] * (CODE_SEGMENT_LENGTH + DATA_SEGMENT_LENGTH); va = VariableAllocator(CODE_SEGMENT_LENGTH, DATA_SEGMENT_LENGTH, program)
 
-limit    = va.make_var(4)
-i        = va.make_var(1)
-total    = va.make_var(0)
-loopcond = va.make_var(0)
+limit               = va.make_var(4)
+i                   = va.make_var(1)
+total               = va.make_var(0)
+loopcond            = va.make_var(0)
 
 # n = limit = 4
 # i = 1
