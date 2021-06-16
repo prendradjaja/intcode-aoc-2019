@@ -15,7 +15,9 @@ class IntcodeComputer:
         copy = list(memory)
         self.memory = copy
 
-    def run(self):
+    def run(self, program=None):
+        if program:
+            self.load_memory(program)
         memory = self.memory
         self.ip = 0
         while memory[self.ip] != 99:
