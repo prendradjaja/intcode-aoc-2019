@@ -20,6 +20,10 @@ def main(program=program):
 
 
 def get_thruster_signal(phase_settings, computer, program):
+    """
+    >>> get_thruster_signal([2, 3, 0, 4, 1], IntcodeComputer(None, OneValueStore()), program)
+    24405
+    """
     last_output = 0
     for setting in phase_settings:
         computer.input = FixedValuesInput([setting, last_output])
