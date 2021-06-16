@@ -1,5 +1,7 @@
 import inspect
 
+from memory import Memory
+
 
 POSITION_MODE = 0
 IMMEDIATE_MODE = 1
@@ -9,11 +11,11 @@ class IntcodeComputer:
     def __init__(self, input_=None, output=None):
         self.input = input_
         self.output = output
-        self.memory = [99]
+        self.memory = Memory()
+        self.memory.load([99])
 
-    def load_memory(self, memory):
-        copy = list(memory)
-        self.memory = copy
+    def load_memory(self, program):
+        self.memory.load(program)
 
     def run(self, program=None):
         if program:
