@@ -1,6 +1,6 @@
 from intcode import IntcodeComputer
 from io_devices import OneValueInput, PrintOutput
-from variables import VariableAllocator
+from intcode_compiler import VariableAllocator
 
 CODE_SEGMENT_LENGTH = 100
 DATA_SEGMENT_LENGTH = 100
