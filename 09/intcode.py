@@ -80,46 +80,56 @@ class IntcodeComputer:
     # add
     def handler_1(self, in1, in2, out):
         self.set_value(out, self.get_value(in1) + self.get_value(in2))
+    handler_1.name = 'add'
 
     # multiply
     def handler_2(self, in1, in2, out):
         self.set_value(out, self.get_value(in1) * self.get_value(in2))
+    handler_2.name = 'mul'
 
     # input
     def handler_3(self, addr):
         assert self.input is not None
         self.set_value(addr, self.input.get_value())
+    handler_3.name = 'inp'
 
     # output
     def handler_4(self, in1):
         assert self.output is not None
         self.output.put_value(self.get_value(in1))
+    handler_4.name = 'out'
 
     # jump-if-true
     def handler_5(self, condition, address):
         if self.get_value(condition) != 0:
             return self.get_value(address)
+    handler_5.name = 'jnz'
 
     # jump-if-false
     def handler_6(self, condition, address):
         if self.get_value(condition) == 0:
             return self.get_value(address)
+    handler_6.name = 'jz'
 
     # less-than
     def handler_7(self, in1, in2, out):
         self.set_value(out, int(self.get_value(in1) < self.get_value(in2)))
+    handler_7.name = 'lt'
 
     # equals
     def handler_8(self, in1, in2, out):
         self.set_value(out, int(self.get_value(in1) == self.get_value(in2)))
+    handler_8.name = 'eq'
 
     # adjust relative base
     def handler_9(self, in1):
         self.relative_base += self.get_value(in1)
+    handler_9.name = 'adjrel'
 
     # stop
     def handler_99(self):
         pass
+    handler_99.name = 'halt'
 
 
 class Param:

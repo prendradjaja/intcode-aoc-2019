@@ -1,0 +1,25 @@
+segment .text
+LOOP:
+    eq @limit @i @loopcond
+    jnz @loopcond #END
+    add @i @total @total
+    add #1 @i @i
+    jnz #1 #LOOP
+END:
+    out @total
+    halt
+
+segment .data
+    limit 4
+    i 1
+    total 0
+    loopcond 0
+
+---------
+
+don't need to explicitly state code and data segment lengths
+
+END and LOOP are lambdas in the python code
+@pos
+#imm
+~rel

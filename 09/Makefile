@@ -1,7 +1,8 @@
 .PHONY: run test
 
 run:
-	python3 main.py
+	# python3 main.py
+	python3 nth-triangle-number.py
 
 test:
 	make test-fast
