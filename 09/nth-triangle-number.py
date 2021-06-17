@@ -2,6 +2,12 @@ from intcode import IntcodeComputer
 from io_devices import OneValueInput, PrintOutput
 from intcode_compiler import *
 
+# # Maybe use this: replace `lambda: SOME_LABEL` with `L.SOME_LABEL`
+# class L:
+#     def __getattr__(self, name):
+#         return lambda: globals()[name]
+# L = L()
+
 CODE_SEGMENT_LENGTH = 100
 DATA_SEGMENT_LENGTH = 100
 '';                                                                                                 program = [0] * (CODE_SEGMENT_LENGTH + DATA_SEGMENT_LENGTH); va = VariableAllocator(CODE_SEGMENT_LENGTH, DATA_SEGMENT_LENGTH, program)
