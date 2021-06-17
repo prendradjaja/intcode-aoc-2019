@@ -38,22 +38,22 @@ code = [
     *add(imm(1), imm(0), pos(x)),
     *add(imm(2), imm(0), pos(y)),
 
-    *add(pos(x), imm(0), pos(arg1)),
-    *add(pos(y), imm(0), pos(arg2)),
-    *add(imm(lambda:Z), imm(0), pos(continue_at)),
-    *jnz(imm(1), imm(lambda:SUBROUTINE)),
+        *add(pos(x), imm(0), pos(arg1)),
+        *add(pos(y), imm(0), pos(arg2)),
+        *add(imm(lambda:Z), imm(0), pos(continue_at)),
+    *jnz(imm(1), imm(lambda:SUBROUTINE)), # subroutine -- indented lines are pre- and post- subroutine
 ];Z                                                                                                 = len(code); code += [
-    *add(pos(result), imm(0), pos(z)),
+        *add(pos(result), imm(0), pos(z)),
 
     *add(imm(4), imm(0), pos(a)),
     *add(imm(5), imm(0), pos(b)),
 
-    *add(pos(a), imm(0), pos(arg1)),
-    *add(pos(b), imm(0), pos(arg2)),
-    *add(imm(lambda:C), imm(0), pos(continue_at)),
+        *add(pos(a), imm(0), pos(arg1)),
+        *add(pos(b), imm(0), pos(arg2)),
+        *add(imm(lambda:C), imm(0), pos(continue_at)),
     *jnz(imm(1), imm(lambda:SUBROUTINE)),
 ];C                                                                                                 = len(code); code += [
-    *add(pos(result), imm(0), pos(c)),
+        *add(pos(result), imm(0), pos(c)),
 
     *out(pos(x)),
     *out(pos(y)),
