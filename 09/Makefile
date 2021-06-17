@@ -2,7 +2,8 @@
 
 run:
 	# python3 main.py
-	python3 nth-triangle-number.py
+	# python3 euler.py
+	python3 subroutine.py
 
 test:
 	make test-fast

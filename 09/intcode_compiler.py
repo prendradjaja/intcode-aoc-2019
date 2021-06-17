@@ -8,7 +8,7 @@ class VariableAllocator:
 
         self.nvars = 0
 
-    def make_var(self, initial_value):
+    def make_var(self, initial_value=0):
         address = self.nvars + self.code_segment_length
         self.program[address] = initial_value
         self.nvars += 1
