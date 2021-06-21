@@ -42,6 +42,10 @@ class IntcodeComputer:
 
         ip = handler(*params)
 
+        # print(self.get_handler(opcode).name, self.ip, self.memory[100:105], sep='\t')
+        # if ip:
+        #     print()
+
         if ip is None:
             self.ip += params_count + 1
         else:
