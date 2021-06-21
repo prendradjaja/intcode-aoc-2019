@@ -16,9 +16,9 @@ jumpcond            = va.make_var(0)
 #     inp item
 #     if item is -1 goto AFTER_LOOP
 #     itemstate = item*2 + state
-#     if item == 0 and state == 1 i.e. itemstate == 1 goto ONE_TO_ZERO
+#     if item == 0 and state == 1 i.e. itemstate == 1 goto END_OF_ONES
 #     if item == 1 and state == 1 i.e. itemstate == 2 goto ADD_ONE
-#     if item == 1 and state == 0 i.e. itemstate == 3 goto SET_ONE
+#     if item == 1 and state == 0 i.e. itemstate == 3 goto START_OF_ONES
 # LOOP_END:
 #     state = item
 #     goto LOOP
@@ -29,13 +29,13 @@ jumpcond            = va.make_var(0)
 # PROGRAM_END:
 #     halt
 #
-# ONE_TO_ZERO:
+# END_OF_ONES:
 #     out length
 #     goto LOOP_END
 # ADD_ONE:
 #     add 1 to length
 #     goto LOOP_END
-# SET_ONE:
+# START_OF_ONES:
 #     set length to 1
 #     goto LOOP_END
 
@@ -43,41 +43,42 @@ jumpcond            = va.make_var(0)
 code = [
 ];LOOP                                                                                              = len(code); code += [
     *inp(pos(item)),
-#   if item is -1 goto AFTER_LOOP
+
     *eq(imm(-1), pos(item), pos(jumpcond)),
     *jnz(pos(jumpcond), imm(lambda: AFTER_LOOP)),
-#   itemstate = item*2 + state
+
+    # itemstate = item*2 + state
     *mul(imm(2), pos(item), pos(itemstate)),
-    *add(pos(state), pos(itemstate), pos(itemstate)),
-#   if item == 0 and state == 1 i.e. itemstate == 1 goto ONE_TO_ZERO
+    *add(pos(state), pos(itemstate), pos(itemstate)),    
+    # if item == 0 and state == 1 goto END_OF_ONES
     *eq(imm(1), pos(itemstate), pos(jumpcond)),
-    *jnz(pos(jumpcond), imm(lambda: ONE_TO_ZERO)),
-#   if item == 1 and state == 1 i.e. itemstate == 2 goto ADD_ONE
+    *jnz(pos(jumpcond), imm(lambda: END_OF_ONES)),
+    # if item == 1 and state == 0 goto START_OF_ONES
+    *eq(imm(2), pos(itemstate), pos(jumpcond)),
+    *jnz(pos(jumpcond), imm(lambda: START_OF_ONES)),
+    # if item == 1 and state == 1 goto ADD_ONE
     *eq(imm(3), pos(itemstate), pos(jumpcond)),
     *jnz(pos(jumpcond), imm(lambda: ADD_ONE)),
-#   if item == 1 and state == 0 i.e. itemstate == 3 goto SET_ONE
-    *eq(imm(2), pos(itemstate), pos(jumpcond)),
-    *jnz(pos(jumpcond), imm(lambda: SET_ONE)),
 ];LOOP_END                                                                                       = len(code); code += [
     *add(imm(0), pos(item), pos(state)),
     *jnz(imm(1), imm(lambda: LOOP)),
 
 ];AFTER_LOOP                                                                                       = len(code); code += [
-#   if state == 0 goto PROGRAM_END
+    # if state == 0 goto PROGRAM_END
     *eq(imm(0), pos(state), pos(jumpcond)),
     *jnz(pos(jumpcond), imm(lambda: PROGRAM_END)),
-#   out length
+
     *out(pos(length)),
 ];PROGRAM_END                                                                                       = len(code); code += [
     *halt(),
 
-];ONE_TO_ZERO                                                                                       = len(code); code += [
+];END_OF_ONES                                                                                       = len(code); code += [
     *out(pos(length)),
     *jnz(imm(1), imm(lambda: LOOP_END)),
 ];ADD_ONE                                                                                       = len(code); code += [
     *add(imm(1), pos(length), pos(length)),
     *jnz(imm(1), imm(lambda: LOOP_END)),
-];SET_ONE                                                                                       = len(code); code += [
+];START_OF_ONES                                                                                       = len(code); code += [
     *add(imm(1), imm(0), pos(length)),
     *jnz(imm(1), imm(lambda: LOOP_END)),
 ];                                                                                                  code = [n if isinstance(n, int) else n() for n in code]; assert len(code) <= CODE_SEGMENT_LENGTH; program[:len(code)] = code
@@ -86,7 +87,7 @@ code = [
 # print(AFTER_LOOP, 'after-loop')
 # print(ONE_TO_ZERO, 'one-tozero')
 # print(ADD_ONE, 'addone')
-# print(SET_ONE, 'setone')
+# print(START_OF_ONES, 'setone')
 
 def nonogramrow(items):
     items = items[:] + [-1]
