@@ -1,0 +1,35 @@
+Partial map of my puzzle input's maze.
+
+S = starting position
+E = oxygen system
+x = shortest path
+
+                       # # # # # # # # # # # # # # # # # # # # #   # # # # #
+                     # . . . . . . . . . . . . . . . . . . x x x # . . . . . #
+           # # # # # # . # # # # # # # # # # # . # # # # # x # x # # # . # . #
+         # . . . . . . . #   # x x x x x x x # . . . # x x x # x x x # . # . #
+         # . # # # # # #     # x # # #   # x # . # # # x # # # # # x # # # . #
+         # . . . #           # x #       # x # . # x x x # x x x # x x x x x
+       # # # # . #         # # x #       # x # # # x # # # x # x # # # # # x #
+     # . . . . . #       # x x x #         x x x # x x x x x # x # E # x x x
+   # # . # # # #         # x # # # # # #   # # x # # # # # # # x # x # x # #
+ # . . . #               # x x x x x x x # . # x x x x x x x x x # x x x
+ # . # #                   # # # # . # x # . # . # # # # # # # #   # # # # #
+ # .                     # x x x # . # x # . . . # x x x x x # x x x # x x x #
+                         # x # x # . # x # # # # # x # # # x # x # x # x # x #
+                         # x # x # . # x x x x x x x . . # x # x # x # x # x #
+                         # x # x # #   # # # # # # # # # # x # x # x # x # x #
+                         # x # x x x # x x x # x x x # x x x # x # x x x # x #
+                         # x # # # x # x # x # x # x # x # # # x # # # # # x #
+                         # x # . . x x x # x x x # x # x x x x x . . . . # x #
+                         # x # . # # # #   # # # # x # # # . # # # # # # # x #
+                         # x # . # x x x #       # x x x # . # x x x x x x x #
+                         # x # # # x # x #         # # x # . # x # # # # # #
+                         # x x x x x # S #           # x # . # x x x x x x x
+                           # # # # #   #             # x # # # # # . # # # x #
+                                                     # x x x x x # . # x x x #
+                                                       # # # # x # . # x # #
+                                                         # x x x # . # x x x #
+                                                         # x # # # # # # # x #
+                                                           x x x x x x x x x #
+                                                             # # # # # # # #
