@@ -19,8 +19,10 @@ from io_devices import Input, Output
 
 
 def main(_stdscr):
-    global HEIGHT, HALF_WIDTH, stdscr, last_movement_command, droid_position, maze_map
+    global HEIGHT, HALF_WIDTH, stdscr, last_movement_command, droid_position, maze_map, oxygen_system_position
     stdscr = _stdscr
+
+    # random.seed(3)
 
     HEIGHT = curses.LINES
     HALF_WIDTH = curses.COLS // 2
@@ -40,27 +42,96 @@ def main(_stdscr):
     computer.run(program)
 
 
-# # (first set every visited flag to false)
-# def bfs(node):
-#     visit(node, None)
-#     node.visited = true
-#     q = [node]
-#     while q:
-#         node = q.pop(0)
-#         for v in node.neighbors:
-#             if not v.visited:
-#                 visit(v, node)
-#                 v.visited = true
-#                 q.append(v)
-# def visit(node, via):  # via = the node you're visiting from
-#     # (implement me)
-#     pass
+def towards_nearest_dot():
+    def get_neighbors(node):
+        result = []
+        for direction in [1, 2, 3, 4]:
+            neighbor = get_movement_destination(direction, node)
+            if maze_map.get(neighbor, None) in ['.', 'o']:
+                result.append(neighbor)
+        return result
+
+    def bfs():
+        node = droid_position
+        visited = {node}
+        parents = {}
+        q = [node]
+        while q:
+            node = q.pop(0)
+            # log(str(node))
+            for v in get_neighbors(node):
+                if v not in visited:
+                    parents[v] = node
+                    if maze_map.get(v, None) == '.':
+                        return v, parents
+                    visited.add(v)
+                    q.append(v)
+        # raise Exception('No dot found')
+        draw(oxygen_system_position, 'E')
+        stdscr.addstr(0, 0, 'Done')
+        stdscr.getkey()
+
+    assert maze_map.get(droid_position, None) != '.'
+    result = bfs()
+    # stdscr.getkey()
+    destination, parents = result
+
+    path = []
+    node = destination
+    while node != droid_position:
+        path.append(node)
+        node = parents[node]
+    next_position = path[-1]
+    direction = positions_to_direction(droid_position, next_position)
+
+    return direction
+
+    # stdscr.addstr(0, 0, f'{destination} {path} {direction}')
+    # stdscr.refresh()
+
+
+def positions_to_direction(pos1, pos2):
+    r1, c1 = pos1
+    r2, c2 = pos2
+    if r2 == r1 - 1:
+        assert c1 == c2
+        return 1
+    elif r2 == r1 + 1:
+        assert c1 == c2
+        return 2
+    elif c2 == c1 - 1:
+        assert r1 == r2
+        return 3
+    elif c2 == c1 + 1:
+        assert r1 == r2
+        return 4
+    raise Exception('Invalid params to positions_to_direction()')
+
 
 
 def handle_input():
     global last_movement_command
+
+    # if random.random() < 0.001:
+    #     get_nearest_dot()
+    #     stdscr.getkey()
+
     # stdscr.getkey()
-    last_movement_command = random.randint(1, 4)
+
+    if maze_map[droid_position] == '.':
+        # for direction in [1, 2, 3, 4]:
+        #     neighbor = get_movement_destination(direction, droid_position)
+        #     if neighbor not in maze_map:
+        #         result = direction
+        #         break
+        result = random.randint(1, 4)
+    else:
+        result = towards_nearest_dot()
+        # log(result)
+        # stdscr.getkey()
+
+
+    last_movement_command = result
     return last_movement_command
 
 
@@ -85,6 +156,7 @@ def handle_input():
 
 
 def handle_output(output):
+    global oxygen_system_position
     if output == 0:
         wall_position = get_movement_destination(last_movement_command, droid_position)
         draw(wall_position, '#')
@@ -103,6 +175,7 @@ def handle_output(output):
         if output == 2:
             stdscr.addstr(1, 0, f'Oxygen system found! Location: {droid_position}')
             draw((0, 0), 'S')
+            oxygen_system_position = droid_position
             draw(droid_position, 'E')
             stdscr.getkey()
     else:
@@ -149,7 +222,8 @@ def draw(position, ch):
     r, c = position
     stdscr.addstr(
         r + HEIGHT // 2,
-        (c * 2) + HALF_WIDTH // 2,
+        # (c * 2) + HALF_WIDTH // 2,
+        c + HALF_WIDTH // 2,
         ch
     )
     stdscr.addstr(0, 0, '')  # Keep the cursor in the corner
@@ -157,6 +231,7 @@ def draw(position, ch):
 
 
 def draw2(position):
+    return
     ch = maze_map[position]
     r, c = position
     stdscr.addstr(
