@@ -26,18 +26,35 @@ def main(_stdscr):
     HALF_WIDTH = curses.COLS // 2
 
     last_movement_command = None
-    droid_position = SimpleNamespace(r=0, c=0)
+    droid_position = (0, 0)
     maze_map = {(0, 0): '.'}
 
     stdscr.clear()
     draw(droid_position, 'D')
-    draw2(SimpleNamespace(r=0, c=0))
+    draw2( (0, 0) )
 
     computer = IntcodeComputer(
         input_ = CallbackInput(handle_input),
         output = CallbackOutput(handle_output),
     )
     computer.run(program)
+
+
+# # (first set every visited flag to false)
+# def bfs(node):
+#     visit(node, None)
+#     node.visited = true
+#     q = [node]
+#     while q:
+#         node = q.pop(0)
+#         for v in node.neighbors:
+#             if not v.visited:
+#                 visit(v, node)
+#                 v.visited = true
+#                 q.append(v)
+# def visit(node, via):  # via = the node you're visiting from
+#     # (implement me)
+#     pass
 
 
 def handle_input():
@@ -71,21 +88,21 @@ def handle_output(output):
     if output == 0:
         wall_position = get_movement_destination(last_movement_command, droid_position)
         draw(wall_position, '#')
-        maze_map[to_tuple(wall_position)] = '#'
+        maze_map[wall_position] = '#'
         draw2(wall_position)
         check_neighbors(wall_position)
     elif output in [1, 2]:
-        previous_position = copy(droid_position)
+        previous_position = droid_position
         move_droid(last_movement_command, droid_position)
         draw(previous_position, '.')
         draw(droid_position, 'D')
-        if to_tuple(droid_position) not in maze_map:
-            maze_map[to_tuple(droid_position)] = '.'
+        if droid_position not in maze_map:
+            maze_map[droid_position] = '.'
             draw2(droid_position)
         check_neighbors(droid_position)
         if output == 2:
             stdscr.addstr(1, 0, f'Oxygen system found! Location: {droid_position}')
-            draw(SimpleNamespace(r=0, c=0), 'S')
+            draw((0, 0), 'S')
             draw(droid_position, 'E')
             stdscr.getkey()
     else:
@@ -106,8 +123,8 @@ def check(position):
         get_movement_destination(3, position),
         get_movement_destination(4, position),
     ]
-    if maze_map.get(to_tuple(position), None) == '.' and all(to_tuple(neighbor) in maze_map for neighbor in neighbors):
-        maze_map[to_tuple(position)] = 'o'
+    if maze_map.get(position, None) == '.' and all(neighbor in maze_map for neighbor in neighbors):
+        maze_map[position] = 'o'
         draw2(position)
 
 
@@ -128,14 +145,11 @@ log = Logger().log
 
 
 
-def to_tuple(position):
-    return (position.r, position.c)
-
-
 def draw(position, ch):
+    r, c = position
     stdscr.addstr(
-        position.r + HEIGHT // 2,
-        (position.c * 2) + HALF_WIDTH // 2,
+        r + HEIGHT // 2,
+        (c * 2) + HALF_WIDTH // 2,
         ch
     )
     stdscr.addstr(0, 0, '')  # Keep the cursor in the corner
@@ -143,10 +157,11 @@ def draw(position, ch):
 
 
 def draw2(position):
-    ch = maze_map[to_tuple(position)]
+    ch = maze_map[position]
+    r, c = position
     stdscr.addstr(
-        position.r + HEIGHT // 2,
-        (position.c * 2) + (3 * HALF_WIDTH // 2),
+        r + HEIGHT // 2,
+        (c * 2) + (3 * HALF_WIDTH // 2),
         ch
     )
     stdscr.addstr(0, 0, '')  # Keep the cursor in the corner
@@ -154,24 +169,23 @@ def draw2(position):
 
 
 def get_movement_destination(direction, position):
-    new_position = copy(position)
+    r, c = position
     if direction == 1:
-        new_position.r -= 1
+        return (r - 1, c)
     elif direction == 2:
-        new_position.r += 1
+        return (r + 1, c)
     elif direction == 3:
-        new_position.c -= 1
+        return (r, c - 1)
     elif direction == 4:
-        new_position.c += 1
+        return (r, c + 1)
     else:
         raise Exception('Invalid direction')
     return new_position
 
 
-def move_droid(direction, droid_position):
-    destination = get_movement_destination(direction, droid_position)
-    droid_position.r = destination.r
-    droid_position.c = destination.c
+def move_droid(direction, _droid_position):
+    global droid_position
+    droid_position = get_movement_destination(direction, _droid_position)
 
 
 class CallbackInput(Input):
