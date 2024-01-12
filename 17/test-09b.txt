@@ -1,0 +1,4 @@
+>>> import importlib
+>>> solution = importlib.import_module('main-09')
+>>> solution.boost(2)
+33679
